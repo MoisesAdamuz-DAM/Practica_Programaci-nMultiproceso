@@ -62,6 +62,9 @@ public class Ventana extends JFrame {
 		contentPane.add(txtCMD);
 		txtCMD.setColumns(10);
 		
+		/**********************************************************************/
+		///////////////////////////////////Text Area///////////////////////////
+		/*********************************************************************/
 		JTextArea textArea = new JTextArea();
 		//textArea.setBounds(21, 53, 211, 184);
 		JScrollPane sp = new JScrollPane(textArea);
@@ -104,10 +107,13 @@ public class Ventana extends JFrame {
 		
 	
 		
+		/****************************************************************/
+		////////////////////////txtProcesos//////////////////////////////
+		/****************************************************************/
 		
 		JTextArea txtProcesos = new JTextArea();
 		txtProcesos.setBounds(263, 178, 169, 102);
-		txtProcesos.setEditable(false);//solo lectura, evitamos que puedan modificar el textArea
+		//txtProcesos.setEditable(false);//solo lectura, evitamos que puedan modificar el textArea
 		contentPane.add(txtProcesos);
 		
 		/***********************************************************/
@@ -217,9 +223,40 @@ public class Ventana extends JFrame {
 		/***************************************************************/
 		//////////////////////////////Boton Juego///////////////////////
 		/***************************************************************/
-		JButton btnNewButton_4 = new JButton("Juego");
-		btnNewButton_4.setBounds(372, 122, 116, 23);
-		contentPane.add(btnNewButton_4);
+		JButton btnJuego = new JButton("Juego");
+		btnJuego.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try
+				{
+					// Ruta y argumentos para lanzar aplicación hija
+					String arg1 = "java";/*Estos parámetros son para ejecutar, es como si lo hiciera por cmd*/
+					String arg2 = "-jar";
+					String arg3 = "C:\\Users\\moise\\Desktop\\videojuego.jar";
+					//Creeamos una tabla de cadenas
+					String[] param = { arg1, arg2, arg3 };
+					//https://stackoverrun.com/es/q/791304
+					Process process = Runtime.getRuntime().exec(param);
+					
+				if(process.isAlive())
+				{
+				
+					txtProcesos.append("Juego"+"\n");
+					btnJuego.setEnabled(false);
+					System.out.println("El Juego está abierto");
+
+				}
+					
+										
+				}
+				catch (IOException ex)
+				{
+					System.out.println("Error");
+					ex.fillInStackTrace();
+				}
+			}
+		});
+		btnJuego.setBounds(372, 122, 116, 23);
+		contentPane.add(btnJuego);
 	
 		/***************************************************************/
 		/////////////////////////////Boton Terminar//////////////////////
