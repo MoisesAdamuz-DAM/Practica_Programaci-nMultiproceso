@@ -117,9 +117,13 @@ public class Ventana extends JFrame  {
 		lista.setBounds(289, 170, 138, 110);
 		contentPane.add(lista);
 		DefaultListModel modelo = new DefaultListModel();
+		//Agregamos modelo a la lista
 		lista.setModel(modelo);
 		//Seleccionamos el elemento de la lista
 		lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		
+	
 		
 		/***********************************************************/
 		///////////////BOTON Bloc de Notas//////////////////////////
@@ -133,15 +137,15 @@ public class Ventana extends JFrame  {
 					//https://stackoverrun.com/es/q/791304
 					Process process = Runtime.getRuntime().exec("notepad.exe");
 					
-					
-				if(process.isAlive())
-				{
 				
-					modelo.addElement("Bloc de Notas"+"\n");
-					btnBlocNotas.setEnabled(false);
-					System.out.println("El Bloc de Notas está abierto");
+						modelo.addElement("Bloc de Notas"+"\n");
+						btnBlocNotas.setEnabled(false);
+						System.out.println("El Bloc de Notas está abierto");
+					
+					
 
-				}
+				
+				
 					
 										
 				}
@@ -263,38 +267,31 @@ public class Ventana extends JFrame  {
 		btnJuego.setBounds(372, 122, 116, 23);
 		contentPane.add(btnJuego);
 	
+		
+		
+		JLabel lblNewLabel = new JLabel("Procesos Activos");
+		lblNewLabel.setBounds(289, 153, 109, 14);
+		contentPane.add(lblNewLabel);
+	
 		/***************************************************************/
 		/////////////////////////////Boton Terminar//////////////////////
-		/****************************************************************/
+	   /****************************************************************/
 		JButton btnTerminar = new JButton("Terminar");
 		btnTerminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) 
 			{
 				
-				eliminarNombre(lista.getSelectedIndex());
+				int index = lista.getSelectedIndex();
+				
+				modelo.removeElementAt(index);
+				
+				
+				
+				
   			}
-
-			private void eliminarNombre(int indice) {
-				// TODO Auto-generated method stub
-				if (indice>=0) {
-					//getSelectedIndex() retorna la posición del elemento, contando el primero con un índice 0,
-                   //este valor es enviado y se usa el método modelo.removeElementAt(indice), para eliminarlo
-					  modelo.removeElementAt(indice); 
-				}
-					  }
-				
-			
-				
-			
 		});
-
-			
 		btnTerminar.setBounds(437, 179, 89, 23);
 		contentPane.add(btnTerminar);
-		
-		JLabel lblNewLabel = new JLabel("Procesos Activos");
-		lblNewLabel.setBounds(289, 153, 109, 14);
-		contentPane.add(lblNewLabel);
 		
 	
 		
