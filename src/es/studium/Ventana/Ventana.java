@@ -7,10 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,12 +21,15 @@ import java.io.InputStreamReader;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
 import javax.swing.Box;
+import javax.swing.DefaultListModel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import java.awt.TextArea;
+import javax.swing.JList;
+import java.awt.Color;
 
-public class Ventana extends JFrame {
+public class Ventana extends JFrame  {
 
 	private JPanel contentPane;
 	private JTextField txtCMD;
@@ -105,16 +110,16 @@ public class Ventana extends JFrame {
 		btnCMD.setBounds(164, 21, 89, 23);
 		contentPane.add(btnCMD);
 		
-	
-		
-		/****************************************************************/
-		////////////////////////txtProcesos//////////////////////////////
-		/****************************************************************/
-		
-		JTextArea txtProcesos = new JTextArea();
-		txtProcesos.setBounds(263, 178, 169, 102);
-		//txtProcesos.setEditable(false);//solo lectura, evitamos que puedan modificar el textArea
-		contentPane.add(txtProcesos);
+		/****************************************************************************/
+		////////////////////////////////Lista////////////////////////////////////////
+		/****************************************************************************/
+		JList lista = new JList();
+		lista.setBounds(289, 170, 138, 110);
+		contentPane.add(lista);
+		DefaultListModel modelo = new DefaultListModel();
+		lista.setModel(modelo);
+		//Seleccionamos el elemento de la lista
+		lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		/***********************************************************/
 		///////////////BOTON Bloc de Notas//////////////////////////
@@ -132,7 +137,7 @@ public class Ventana extends JFrame {
 				if(process.isAlive())
 				{
 				
-					txtProcesos.append("Bloc de Notas"+"\n");
+					modelo.addElement("Bloc de Notas"+"\n");
 					btnBlocNotas.setEnabled(false);
 					System.out.println("El Bloc de Notas está abierto");
 
@@ -164,7 +169,7 @@ public class Ventana extends JFrame {
 				if(process.isAlive())
 				{
 				
-					txtProcesos.append("Paint"+"\n");
+					modelo.addElement("Paint"+"\n");
 					btnPaint.setEnabled(false);
 					System.out.println("Paint está abierto");
 
@@ -202,7 +207,7 @@ public class Ventana extends JFrame {
 				if(process.isAlive())
 				{
 				
-					txtProcesos.append("Gestión"+"\n");
+					modelo.addElement("Gestión"+"\n");
 					btnGestion.setEnabled(false);
 					System.out.println("El Programa de Gestión está abierto");
 
@@ -240,7 +245,7 @@ public class Ventana extends JFrame {
 				if(process.isAlive())
 				{
 				
-					txtProcesos.append("Juego"+"\n");
+					modelo.addElement("Juego"+"\n");
 					btnJuego.setEnabled(false);
 					System.out.println("El Juego está abierto");
 
@@ -261,17 +266,41 @@ public class Ventana extends JFrame {
 		/***************************************************************/
 		/////////////////////////////Boton Terminar//////////////////////
 		/****************************************************************/
-		JButton btnNewButton_5 = new JButton("Terminar");
-		btnNewButton_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
+		JButton btnTerminar = new JButton("Terminar");
+		btnTerminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+				eliminarNombre(lista.getSelectedIndex());
+  			}
+
+			private void eliminarNombre(int indice) {
+				// TODO Auto-generated method stub
+				if (indice>=0) {
+					//getSelectedIndex() retorna la posición del elemento, contando el primero con un índice 0,
+                   //este valor es enviado y se usa el método modelo.removeElementAt(indice), para eliminarlo
+					  modelo.removeElementAt(indice); 
+				}
+					  }
+				
+			
+				
+			
 		});
-		btnNewButton_5.setBounds(437, 179, 89, 23);
-		contentPane.add(btnNewButton_5);
+
+			
+		btnTerminar.setBounds(437, 179, 89, 23);
+		contentPane.add(btnTerminar);
 		
 		JLabel lblNewLabel = new JLabel("Procesos Activos");
 		lblNewLabel.setBounds(289, 153, 109, 14);
 		contentPane.add(lblNewLabel);
+		
+	
+		
+		
+		
+		
 		
 		
 		
