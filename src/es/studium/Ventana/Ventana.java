@@ -17,6 +17,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.awt.event.ActionEvent;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+
+import java.awt.TextArea;
 
 public class Ventana extends JFrame {
 
@@ -56,28 +62,34 @@ public class Ventana extends JFrame {
 		contentPane.add(txtCMD);
 		txtCMD.setColumns(10);
 		
-		JTextArea txtArea = new JTextArea();
-		txtArea.setBounds(21, 53, 232, 170);
-		contentPane.add(txtArea);
+		JTextArea textArea = new JTextArea();
+		//textArea.setBounds(21, 53, 211, 184);
+		JScrollPane sp = new JScrollPane(textArea);
+		sp.setBounds(21, 53, 230, 184);
+		textArea.setEditable(false);
+		contentPane.add(sp);
 		
+		/*********************************************************************************************/
+		///////////////////////Boton Ejecutar/////////////////////////////////////////////////////////
+		/*********************************************************************************************/
 		JButton btnCMD = new JButton("Ejecutar");
 		btnCMD.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				try {
 					
 					String cmd = txtCMD.getText();
-					Process process = Runtime.getRuntime().exec(cmd);
+					Process process = Runtime.getRuntime().exec("cmd /c " +cmd);
 				    InputStreamReader entrada = new InputStreamReader(process.getInputStream());
-				    BufferedReader stdInput = new BufferedReader(entrada);
+				    BufferedReader br = new BufferedReader(entrada);
 				    String salida = null;
-				    if((salida=stdInput.readLine()) != null){
+				   
 		            	System.out.println("Comando ejecutado Correctamente");
-		            	while ((salida=stdInput.readLine()) != null){
-		                	txtArea.setText(salida);;
+		            	while ((salida=br.readLine()) != null){
+		                	textArea.append(salida+"\n");;
+		                	br.readLine();
+		                	System.out.println(salida);
 		                }
-		            }else{
-		            	System.out.println("No se a producido ninguna salida");
-		            }
+		           
 					
 					
 				    } 
@@ -98,7 +110,9 @@ public class Ventana extends JFrame {
 		txtProcesos.setEditable(false);//solo lectura, evitamos que puedan modificar el textArea
 		contentPane.add(txtProcesos);
 		
+		/***********************************************************/
 		///////////////BOTON Bloc de Notas//////////////////////////
+		/***********************************************************/
 		
 		JButton btnBlocNotas = new JButton("Bloc de Notas");
 		btnBlocNotas.addActionListener(new ActionListener() {
@@ -112,7 +126,8 @@ public class Ventana extends JFrame {
 				if(process.isAlive())
 				{
 				
-					txtProcesos.setText("Bloc de Notas"+"\n");
+					txtProcesos.append("Bloc de Notas"+"\n");
+					btnBlocNotas.setEnabled(false);
 					System.out.println("El Bloc de Notas está abierto");
 
 				}
@@ -140,12 +155,12 @@ public class Ventana extends JFrame {
 					//https://stackoverrun.com/es/q/791304
 					Process process = Runtime.getRuntime().exec("mspaint.exe");
 					
-					
 				if(process.isAlive())
 				{
 				
-					txtProcesos.setText("Paint"+"\n");
-					System.out.println("El Bloc de Notas está abierto");
+					txtProcesos.append("Paint"+"\n");
+					btnPaint.setEnabled(false);
+					System.out.println("Paint está abierto");
 
 				}
 					
@@ -160,16 +175,55 @@ public class Ventana extends JFrame {
 		btnPaint.setBounds(372, 54, 116, 23);
 		contentPane.add(btnPaint);
 		
-		JButton btnNewButton_3 = new JButton("Gesti\u00F3n");
-		btnNewButton_3.setBounds(372, 88, 116, 23);
-		contentPane.add(btnNewButton_3);
+		/******************************************************************/
+		///////////////////////////Boton Gestion///////////////////////////
+		/******************************************************************/
 		
+		JButton btnGestion = new JButton("Gesti\u00F3n");
+		btnGestion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				try
+				{
+					// Ruta y argumentos para lanzar aplicación hija
+					String arg1 = "java";/*Estos parámetros son para ejecutar, es como si lo hiciera por cmd*/
+					String arg2 = "-jar";
+					String arg3 = "C:\\Users\\moise\\Desktop\\crud.jar";
+					//Creeamos una tabla de cadenas
+					String[] param = { arg1, arg2, arg3 };
+					//https://stackoverrun.com/es/q/791304
+					Process process = Runtime.getRuntime().exec(param);
+					
+				if(process.isAlive())
+				{
+				
+					txtProcesos.append("Gestión"+"\n");
+					btnGestion.setEnabled(false);
+					System.out.println("El Programa de Gestión está abierto");
+
+				}
+					
+										
+				}
+				catch (IOException ex)
+				{
+					System.out.println("Error");
+					ex.fillInStackTrace();
+				}
+			}
+		});
+		btnGestion.setBounds(372, 88, 116, 23);
+		contentPane.add(btnGestion);
+		
+		/***************************************************************/
+		//////////////////////////////Boton Juego///////////////////////
+		/***************************************************************/
 		JButton btnNewButton_4 = new JButton("Juego");
 		btnNewButton_4.setBounds(372, 122, 116, 23);
 		contentPane.add(btnNewButton_4);
 	
-		
-		
+		/***************************************************************/
+		/////////////////////////////Boton Terminar//////////////////////
+		/****************************************************************/
 		JButton btnNewButton_5 = new JButton("Terminar");
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -181,5 +235,12 @@ public class Ventana extends JFrame {
 		JLabel lblNewLabel = new JLabel("Procesos Activos");
 		lblNewLabel.setBounds(289, 153, 109, 14);
 		contentPane.add(lblNewLabel);
+		
+		
+		
+		
+		
+	
+	
 	}
 }
